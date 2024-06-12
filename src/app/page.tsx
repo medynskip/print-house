@@ -1,95 +1,117 @@
+import LinkButton from "./_components/LinkButton/LinkButton";
+import ServiceCard from "./_components/ServiceCard/ServiceCard";
+import CoopCard from "./_components/CoopCard/CoopCard";
+
 import Image from "next/image";
+
+import { steps } from "../../data/steps";
+import { services } from "../../data/services";
+
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
+    <>
+      {/* <Layout
+        title="Internetowa drukarnia i agencja reklamowa"
+        pages={pages}
+        products={products}
+      > */}
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          {/* <Container className="header"> */}
+            <h1>
+              INTERNETOWA
+              <br /> AGENCJA
+              <br /> REKLAMOWA
+            </h1>
+            <div className="catchphrase">
+              <span>
+                Od <mark className="sea">pomysłu</mark>
+              </span>
+              <br />
+              <span>
+                przez <mark className="red">projekt</mark>
+              </span>
+              <br />
+              <span>
+                do <mark className="blue">realizacji</mark>
+              </span>
+            </div>
+            <div className="action-invite">
+              Poznaj nasze:
+              <div>
+                <LinkButton to="/uslugi/" text="usługi" varinat="primary" />
+                <LinkButton to="/produkty/" text="produkty" variant="success" />
+              </div>
+            </div>
+            <div className="social">
+              <a href="#">
+                <Image src="/images/facebook_ico.png" alt="Facebook" />
+              </a>
+              <a href="#">
+                <Image src="/images/instagram_ico.png" alt="Instagram" />
+              </a>
+              <a href="#">
+                <Image src="/images/twitter_ico.png" alt="Twitter" />
+              </a>
+            </div>
+          {/* </Container> */}
         </div>
-      </div>
+        <section className="we-offer">
+          {/* <Container> */}
+            <h3>Co możemy dla Ciebie zrobić?</h3>
+            {/* <Row noGutters xs={1} md={2} lg={3}> */}
+              {services.map((service, index) => {
+                return <ServiceCard key={index} service={service} />;
+              })}
+            {/* </Row> */}
+          {/* </Container> */}
+        </section>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <section className="co-op">
+          {/* <Container> */}
+            <h3>Jak wygląda współpraca?</h3>
+            {/* <Row noGutters xs={1} md={1} lg={1}> */}
+              {steps.map((step, index) => {
+                return <CoopCard key={index} step={step} />;
+              })}
+            {/* </Row> */}
+          {/* </Container> */}
+        </section>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+        <section className="talk-to-us">
+          {/* <Container> */}
+            <h3>Daj nam się zaskoczyć</h3>
+            {/* <Row noGutters xs={1} md={2} lg={2}> */}
+              {/* <Col lg={4} xs={{ order: 2 }} md={{ order: 1 }}> */}
+                <span>JESTEŚMY</span>
+                <br />
+                <span>GOTOWI NA KAŻDE</span>
+                <br />
+                <span>WYZWANIE</span>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
+                  diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+                  aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
+                  nostrud exerci tation ullamcorper suscipit lobortis nisl ut.
+                </p>
+                <button>portfolio</button>
+              {/* </Col> */}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+              {/* <Col lg={8} xs={{ order: 1 }} md={{ order: 2 }}> */}
+                <Image
+                  src="/images/kreatywny_zespol.jpg"
+                  alt="Gotowi na każde wyzwanie!"
+                />
+              {/* </Col>
+            </Row>
+          </Container> */}
+        </section>
+      {/* </Layout> */}
+    </>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
   );
 }
