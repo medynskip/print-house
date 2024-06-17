@@ -1,12 +1,13 @@
-// import { useHistory } from "react-router-dom";
 import Link from "next/link";
 
-// import Button from "react-bootstrap/Button";
-
-const LinkButton = (props) => {
+interface LinkButtonProps {
+  to: string;
+  text: string;
+}
+const LinkButton = ({ to, text }: LinkButtonProps) => {
   return (
-    <Link href={props.to}>
-        {props.text}
+    <Link href={to}>
+      {text}
       {/* <a>
         <Button variant={props.variant}></Button>
       </a> */}

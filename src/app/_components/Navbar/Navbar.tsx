@@ -1,4 +1,4 @@
-import NavItem from "./components/NavItem/NavItem";
+import NavItem from "../NavItem/NavItem";
 // import Navbar from "react-bootstrap/Navbar";
 // import Nav from "react-bootstrap/Nav";
 // import Container from "react-bootstrap/Container";
@@ -11,9 +11,7 @@ import NavItem from "./components/NavItem/NavItem";
 const Navbar = () => {
   return (
     <nav>
-
-    
-    {/* <Navbar
+      {/* <Navbar
       collapseOnSelect
       expand="lg"
       fixed="top"
@@ -28,22 +26,15 @@ const Navbar = () => {
           id="responsive-navbar-nav"
           className="justify-content-end"
         > */}
-          {/* <Nav> */}
-            <NavItem href="/produkty">PRODUKTY
-            </NavItem>
-            <NavItem href="/uslugi">
-             USŁUGI
-            </NavItem>
-            <NavItem href="/blog">
-              BLOG
-            </NavItem>
-            <NavItem href="/kontakt">
-              KONTAKT
-            </NavItem>
-            <NavItem href="/zamowienie/wyszukaj">
-              wyszukaj
-            </NavItem>
-          {/* </Nav>
+      {/* <Nav> */}
+      <NavItem href="/produkty" text="PRODUKTY" />
+      <NavItem href="/uslugi" text="USŁUGI" />
+      <NavItem href="/blog" text="BLOG" />
+      <NavItem href="/kontakt" text="KONTAKT" />
+      <NavItem href="/zamowienie" text="zamowienie" />
+      <NavItem href="/wyszukaj" text="wyszukaj" />
+
+      {/* </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar> */}
