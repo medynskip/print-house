@@ -1,4 +1,5 @@
 import Navigation from "./_components/Navigation/Navigation";
+import style from "./layout.module.scss";
 
 export default function AdminLayout({
   children,
@@ -6,9 +7,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main>
+    <main className={style.main}>
       <Navigation />
-      {children}
+      <div className={style.content}>{children}</div>
     </main>
   );
 }

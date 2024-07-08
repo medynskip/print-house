@@ -9,13 +9,13 @@
 import Alert from "react-bootstrap/Alert";
 import ListGroup from "react-bootstrap/ListGroup";
 
-import { getActiveProducts } from "@/fetchers/products";
+import { getProducts } from "@/fetchers/products";
 
 import AddProduct from "./_components/AddProduct/AddProduct";
 import ProductCard from "./_components/ProductCard/ProductCard";
 
 const ProductsModule = async () => {
-  const products = await getActiveProducts();
+  const products = await getProducts();
 
   console.log("PRODS", products);
 

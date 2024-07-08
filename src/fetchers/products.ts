@@ -8,7 +8,7 @@ interface Product {
 
 type NewProduct = Omit<Product, "_id">;
 
-export const getActiveProducts = async () => {
+export const getProducts = async () => {
   const res = await fetch("http://localhost:5001/product/get", {
     cache: "no-store",
   });
@@ -18,13 +18,21 @@ export const getActiveProducts = async () => {
   return products;
 };
 
+export const getProductDetails = async (productID: string) => {
+  const res = await fetch(`http://localhost:5001/product/get/${productID}`, {
+    cache: "no-store",
+  });
+
+  const product = (await res.json()) as Product[];
+
+  return product;
+};
+
 export const deleteProduct = async (productID: string) => {
-  console.log("DELETE PRODUCT", productID);
   await fetch(`http://localhost:5001/product/delete/${productID}`, {
     method: "DELETE",
   }).then(() => {
     return "success";
-    // router.replace(router.asPath);
   });
 };
 
@@ -37,6 +45,5 @@ export const addProduct = async (product: NewProduct) => {
     body: JSON.stringify(product),
   }).then(() => {
     return "success";
-    // router.replace(router.asPath);
   });
 };
