@@ -1,32 +1,38 @@
 "use client";
+
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 
+// import { updateProduct } from "@/fetchers/products";
+
 import ProductDescription from "../ProductDescription/ProductDescription";
 import ProductParameters from "../ProductParameters/ProductParameters";
-// import ProductPrices from "../_components/ProductPrices/ProductPrices";
+import ProductPrices from "../ProductPrices/ProductPrices";
 
-const ProductWrapper = ({ product }: { product: object }) => {
-  const update = (params: object) => {
-    console.log("PARAMS", params);
+import type { Product } from "../../../../../../types/types";
 
-    // updateProduct({
-    //   ...product,
-    //   ...params,
-    // });
-  };
+interface ProductWrapperProps {
+  product: Product;
+}
+const ProductWrapper = ({ product }: ProductWrapperProps) => {
+  // const update = async (params: object) => {
+  //   await updateProduct({
+  //     ...product,
+  //     ...params,
+  //   });
+  // };
 
   return (
     <Tabs>
       <Tab eventKey="opis" title="Opis">
-        <ProductDescription product={product} update={update} />
+        <ProductDescription product={product} />
       </Tab>
       <Tab eventKey="parametry" title="Parametry">
-        <ProductParameters product={product} update={update} />
+        <ProductParameters product={product} />
       </Tab>
-      {/* <Tab eventKey="ceny" title="Ceny">
-          <ProductPrices product={product} update={update} />
-        </Tab> */}
+      <Tab eventKey="ceny" title="Ceny">
+        <ProductPrices product={product} />
+      </Tab>
     </Tabs>
   );
 };

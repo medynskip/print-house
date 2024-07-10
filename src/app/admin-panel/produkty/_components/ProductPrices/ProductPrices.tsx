@@ -1,10 +1,13 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
 
-import PriceNew from "./priceNew";
-import PricesGenerator from "./pricesGenerator";
+// import PriceNew from "./priceNew";
+// import PricesGenerator from "./pricesGenerator";
 
-const ProductPrices = ({ product, update }) => {
+import PricesGenerator from "../PricesGenerator/PricesGenerator";
+// import PriceNew from "../PriceNew/PriceNew";
+
+const ProductPrices = ({ product }) => {
   const addPrice = (newItem) => {
     update({
       prices: [...product.prices, newItem],
@@ -15,10 +18,10 @@ const ProductPrices = ({ product, update }) => {
     <>
       <Table striped hover>
         <tbody>
-          <PricesGenerator />
+          <PricesGenerator product={product} />
         </tbody>
       </Table>
-      <PriceNew update={addPrice} />
+      {/* <PriceNew update={addPrice} /> */}
     </>
   );
 };

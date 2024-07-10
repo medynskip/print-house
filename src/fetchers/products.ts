@@ -1,12 +1,4 @@
-interface Product {
-  _id: string;
-  name: string;
-  active: boolean;
-  parameters: object[];
-  prices: object[];
-}
-
-type NewProduct = Omit<Product, "_id">;
+import type { NewProduct, Product } from "../../types/types";
 
 export const getProducts = async () => {
   const res = await fetch("http://localhost:5001/product/get", {
@@ -23,7 +15,7 @@ export const getProductDetails = async (productID: string) => {
     cache: "no-store",
   });
 
-  const product = (await res.json()) as Product[];
+  const product = (await res.json()) as Product;
 
   return product;
 };
@@ -39,6 +31,18 @@ export const deleteProduct = async (productID: string) => {
 export const addProduct = async (product: NewProduct) => {
   await fetch("http://localhost:5001/product/add", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(product),
+  }).then(() => {
+    return "success";
+  });
+};
+
+export const updateProduct = async (product: Product) => {
+  await fetch(`http://localhost:5001/product/update/${product._id}`, {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },

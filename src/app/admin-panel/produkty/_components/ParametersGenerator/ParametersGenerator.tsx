@@ -7,12 +7,19 @@ import Alert from "react-bootstrap/Alert";
 // import ParameterRow from "./parameterRow";
 import ParameterItem from "../ParameterItem/ParameterItem";
 
-const ParametersGenerator = ({ product, updateProduct }) => {
-  const update = (newParams) => {
-    updateProduct({
-      ...product,
-      parameters: [...newParams],
-    });
+import type { Parameters, Product } from "../../../../../../types/types";
+
+interface ParametersGeneratorProps {
+  product: Product;
+  updateProduct: (params: Parameters[]) => Promise<void>;
+}
+
+const ParametersGenerator = ({
+  product,
+  updateProduct,
+}: ParametersGeneratorProps) => {
+  const update = async (newParams: Parameters[]) => {
+    await updateProduct(newParams);
   };
 
   if (product.parameters.length < 1) {
@@ -33,20 +40,3 @@ const ParametersGenerator = ({ product, updateProduct }) => {
 };
 
 export default ParametersGenerator;
-
-// const mapStateToProps = (state) => ({
-//   product: { ...state.product },
-// });
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     updateProduct: (product) => dispatch(updateProduct(product)),
-//   };
-// };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(ParametersGenerator);
-
-// export default ParametersGenerator;

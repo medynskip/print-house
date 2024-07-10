@@ -5,26 +5,34 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
-const ParameterValueNew = ({ addValue }) => {
-  const [values, setValues] = useState({
-    name: "",
-    multiplier: 1,
-  });
+import type { FormEvent } from "react";
+
+interface ParameterValueNewProps {
+  addValue: (value: string) => Promise<void>;
+}
+
+const ParameterValueNew = ({ addValue }: ParameterValueNewProps) => {
+  const [value, setValue] = useState("");
 
   const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
+    console.log(value);
+
+    setValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addValue(values);
+  const handleSubmit = async () => {
+    await addValue(value);
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        void (async () => {
+          await handleSubmit();
+        })();
+      }}
+    >
       <InputGroup className="row">
         <Form.Control
           name="name"
@@ -32,23 +40,14 @@ const ParameterValueNew = ({ addValue }) => {
           aria-label="Podaj nową wartość"
           aria-describedby="basic-addon2"
           onChange={handleChange}
-          value={values.name}
+          value={value}
           className="col-8"
         />
-        <Form.Control
-          name="multiplier"
-          placeholder="Modyfikator"
-          aria-label="Modyfikator"
-          aria-describedby="basic-addon2"
-          onChange={handleChange}
-          value={values.multiplier}
-          className="col-2"
-        />
-        <InputGroup.Append className="col-2">
+        <InputGroup className="col-2">
           <Button type="submit" variant="outline-success">
             Dodaj
           </Button>
-        </InputGroup.Append>
+        </InputGroup>
       </InputGroup>
     </Form>
   );

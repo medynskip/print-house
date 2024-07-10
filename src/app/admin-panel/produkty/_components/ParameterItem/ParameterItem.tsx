@@ -1,23 +1,19 @@
-// import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 
-// import ParameterHeader from "./parameterHeader";
 import ParameterItemHeader from "../ParameterItemHeader/ParameterItemHeader";
 import ParameterValueNew from "../ParameterValueNew/ParameterValueNew";
 import ParameterValueRow from "../ParameterValueRow/ParameterValueRow";
 
-// import ValueNew from "./valueNew";
-// import ValueRow from "./valueRow";
-
 const ParameterItem = ({ product, parameter, update }) => {
   const id = parameter._id;
 
-  const addValue = (newItem) => {
+  const addValue = async (value) => {
     const i = product.parameters.findIndex((x) => x._id == id);
-    const updatedParameters = [...product.parameters];
-    updatedParameters[i].fieldValues.push({ ...newItem });
 
-    update(updatedParameters);
+    const updatedParameters = [...product.parameters];
+    updatedParameters[i].fieldValues.push({ value: value });
+
+    await update(updatedParameters);
   };
 
   const deleteValue = (idToRemove) => {
@@ -36,7 +32,7 @@ const ParameterItem = ({ product, parameter, update }) => {
     const j = updatedParameters[i].fieldValues.findIndex(
       (x) => x._id == idToChange,
     );
-    updatedParameters[i].fieldValues[j] = { ...updated };
+    updatedParameters[i].fieldValues[j].value = updated;
     // console.log(updatedParameters);
     update(updatedParameters);
   };

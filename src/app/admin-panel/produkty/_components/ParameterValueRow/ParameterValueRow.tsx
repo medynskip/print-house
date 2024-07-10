@@ -6,25 +6,36 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const ParameterValueRow = ({ el, deleteValue, updateValue }) => {
-  const [values, setValues] = useState({
-    name: el.name,
-    multiplier: el.multiplier,
-  });
+import type { ChangeEvent } from "react";
+
+interface ParameterValueRowProps {
+  el: {
+    value: string;
+    _id: string;
+  };
+  deleteValue: (id: string) => void;
+  updateValue: (value: string, id: string) => void;
+}
+
+const ParameterValueRow = ({
+  el,
+  deleteValue,
+  updateValue,
+}: ParameterValueRowProps) => {
+  const [value, setValue] = useState(el.value);
   const [editable, setEditable] = useState(false);
 
-  const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
+  // const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   };
 
   const editThis = () => {
-    setEditable((prev) => !prev);
     if (editable) {
-      updateValue(values, el._id);
+      updateValue(value, el._id);
     }
+
+    setEditable((prev) => !prev);
   };
 
   const deleteThis = () => {
@@ -32,33 +43,35 @@ const ParameterValueRow = ({ el, deleteValue, updateValue }) => {
   };
 
   return (
-    <tr className="row">
-      <td className="col-8">
+    <tr>
+      <td>
         <Form.Control
           name="name"
-          value={values.name}
+          value={value}
           onChange={handleChange}
           disabled={!editable}
         />
       </td>
-      <td className="col-2">
+      {/* <td className="col-2">
         <Form.Control
           name="multiplier"
           value={values.multiplier}
           onChange={handleChange}
           disabled={!editable}
         />
-      </td>
+      </td> */}
       <td className="col-2">
         <Button
           onClick={editThis}
           variant={editable ? "success" : "primary"}
           size="sm"
         >
-          <FontAwesomeIcon icon={editable ? faSave : faEdit} />
+          {editable ? "zapisz" : "edytuj"}
+          {/* <FontAwesomeIcon icon={editable ? faSave : faEdit} /> */}
         </Button>
         <Button onClick={deleteThis} variant="danger" size="sm">
-          <FontAwesomeIcon icon={faTrashAlt} />
+          usuń
+          {/* <FontAwesomeIcon icon={faTrashAlt} /> */}
         </Button>
       </td>
     </tr>

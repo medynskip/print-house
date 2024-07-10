@@ -7,24 +7,21 @@ import Col from "react-bootstrap/Col";
 import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
-// import Table from "react-bootstrap/Table";
 
-const ReactQuill = dynamic(() => import("react-quill"));
+import { updateProduct } from "@/fetchers/products";
+
+import type { Product } from "../../../../../../types/types";
+import type { ChangeEvent } from "react";
+
+type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
 
 interface ProductDescriptionProps {
-  product: {
-    active: boolean;
-    name: string;
-    icon: string;
-    duration: number;
-    descriptionShort: string;
-    descriptionLong: string;
-  };
-  update: (params: object) => void;
+  product: Product;
 }
 
-const ProductDescription = ({ product, update }: ProductDescriptionProps) => {
+const ProductDescription = ({ product }: ProductDescriptionProps) => {
   const [editable, setEditable] = useState(false);
   const [active, setActive] = useState(product.active);
 
@@ -37,17 +34,19 @@ const ProductDescription = ({ product, update }: ProductDescriptionProps) => {
   const [shortDesc, setShortDesc] = useState(product.descriptionShort);
   const [longDesc, setLongDesc] = useState(product.descriptionLong);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<FormControlElement>) => {
     setHeader({
       ...header,
       [e.target.name]: e.target.value,
     });
   };
 
-  const edit = () => {
+  const edit = async () => {
     setEditable((prev) => !prev);
+
     if (editable) {
-      update({
+      await updateProduct({
+        ...product,
         ...header,
         descriptionShort: shortDesc,
         descriptionLong: longDesc,
@@ -55,9 +54,9 @@ const ProductDescription = ({ product, update }: ProductDescriptionProps) => {
     }
   };
 
-  const activate = () => {
+  const activate = async () => {
     setActive((prev) => !prev);
-    update({ active: !active });
+    await updateProduct({ ...product, active: !active });
   };
 
   return (
@@ -103,14 +102,23 @@ const ProductDescription = ({ product, update }: ProductDescriptionProps) => {
         </Col>
         <Col>
           <Button
-            onClick={edit}
+            onClick={() => {
+              void (async () => {
+                await edit();
+              })();
+            }}
             variant={editable ? "success" : "primary"}
             size="sm"
           >
             {editable ? "Zapisz zmiany" : "Edytuj nagłówek"}
           </Button>
           <Button
-            onClick={activate}
+            onClick={() => {
+              void (async () => {
+                await activate();
+              })();
+            }}
+            // onClick={activate}
             variant={active ? "danger" : "success"}
             size="sm"
           >
