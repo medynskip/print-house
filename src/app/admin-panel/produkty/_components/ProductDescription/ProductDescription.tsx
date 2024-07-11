@@ -64,9 +64,7 @@ const ProductDescription = ({ product }: ProductDescriptionProps) => {
       <Row className="product-header">
         <Col>
           <InputGroup className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>NAZWA</InputGroup.Text>
-            </InputGroup>
+            <InputGroup.Text>NAZWA</InputGroup.Text>
             <FormControl
               name="name"
               value={header.name}
@@ -76,9 +74,7 @@ const ProductDescription = ({ product }: ProductDescriptionProps) => {
             />
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>IKONA</InputGroup.Text>
-            </InputGroup>
+            <InputGroup.Text>IKONA</InputGroup.Text>
             <FormControl
               name="icon"
               value={header.icon}
@@ -88,9 +84,7 @@ const ProductDescription = ({ product }: ProductDescriptionProps) => {
             />
           </InputGroup>
           <InputGroup className="mb-3">
-            <InputGroup>
-              <InputGroup.Text>TERMIN</InputGroup.Text>
-            </InputGroup>
+            <InputGroup.Text>TERMIN</InputGroup.Text>
             <FormControl
               name="duration"
               value={header.duration}

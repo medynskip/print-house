@@ -1,78 +1,119 @@
-// import { connect } from "react-redux";
-import Alert from "react-bootstrap/Alert";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { Spinner } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-import Spinner from "react-bootstrap/Spinner";
+import Table from "react-bootstrap/Table";
 
-import { updateProduct } from "@/fetchers/products";
+import {
+  addProductPriceList,
+  getProductPriceList,
+  updateProductPriceList,
+} from "@/fetchers/products";
 
+import PriceNew from "../PriceNew/PriceNew";
 import PriceRow from "../PriceRow/PriceRow";
 
-// import { updateProduct } from "./../../redux/actions/productActions";
+import type { Product } from "../../../../../../types/types";
+import type { ChangeEvent } from "react";
 
-// import PriceRow from "./priceRow";
+interface PricesGeneratorProps {
+  product: Product;
+}
 
-// import { updateProduct } from "@/fetchers/products";
-
-const PricesGenerator = ({ product }) => {
-  // const update = (newPrices) => {
-  //   updateProduct({
-  //     ...product,
-  //     prices: [...newPrices],
-  //   });
-  // };
-
-  return (
-    <>
-      <div>
-        <h2>POLA</h2>
-        <div>
-          {product.parameters.map((param) => (
-            <Form.Select key={param._id} aria-label="Default select example">
-              <option>Open this select menu</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </Form.Select>
-          ))}
-        </div>
-      </div>
-    </>
+const PricesGenerator = ({ product }: PricesGeneratorProps) => {
+  const [filter, setFilter] = useState<object>(() =>
+    product.parameters.reduce(
+      (prev, curr) => ({
+        ...prev,
+        [curr.fieldName]: curr.fieldValues[0]._id,
+      }),
+      {},
+    ),
   );
 
-  // if (product.loading) {
-  //   return (
-  //     <tr>
-  //       <td className="spinner-td">
-  //         <Spinner animation="border" role="status">
-  //           <span className="sr-only">Loading...</span>
-  //         </Spinner>
-  //       </td>
-  //     </tr>
-  //   );
-  // } else if (product.prices.length < 1) {
-  //   return (
-  //     <tr>
-  //       <td>
-  //         <Alert variant="warning">Ten produkt nie posiada żadnych cen!</Alert>
-  //       </td>
-  //     </tr>
-  //   );
-  // } else {
-  //   return product.prices.map((el, i) => (
-  //     <PriceRow key={i} priceEntry={el} product={product} update={update} />
-  //   ));
-  // }
+  const filterKey = Object.values(filter).join("-");
+
+  const { isPending, data } = useQuery({
+    queryKey: [filterKey],
+    queryFn: () => getProductPriceList(filterKey),
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const createPriceList = async (value: { amount: number; price: number }) => {
+    await addProductPriceList({
+      configuration: filterKey,
+      values: [value],
+    });
+  };
+
+  const updatePriceList = async (value: { amount: number; price: number }) => {
+    if (!data) return;
+
+    await updateProductPriceList({
+      ...data,
+      values: [...data.values, value],
+    });
+  };
+
+  return (
+    <div>
+      <h2>POLA</h2>
+      <div>
+        {product.parameters.map((param) => (
+          <div key={param.fieldName}>
+            <label>{param.fieldName}</label>
+            <Form.Select
+              onChange={handleChange}
+              key={param._id}
+              aria-label="Default select example"
+              name={param.fieldName}
+            >
+              {param.fieldValues.map((el) => (
+                <option key={el._id} value={el._id}>
+                  {el.value}
+                </option>
+              ))}
+            </Form.Select>
+          </div>
+        ))}
+      </div>
+      <h2>WARTOŚCI</h2>
+      {isPending ? (
+        <Spinner />
+      ) : (
+        <>
+          {data ? (
+            <>
+              <Table striped hover>
+                <tbody>
+                  {data.values.map((el) => (
+                    <PriceRow
+                      key={el.amount}
+                      priceEntry={el}
+                      update={updatePriceList}
+                      product={product}
+                      filterKey={filterKey}
+                    />
+                  ))}
+                </tbody>
+              </Table>
+              <PriceNew update={updatePriceList} />
+            </>
+          ) : (
+            <div>
+              <div>BRAK ZDEFINIOWANYCH CEN DLA FILTRU</div>
+              <PriceNew update={createPriceList} />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
-// const mapStateToProps = (state) => ({
-//   product: { ...state.product },
-// });
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     updateProduct: (product) => dispatch(updateProduct(product)),
-//   };
-// };
-
 export default PricesGenerator;
-// export default connect(mapStateToProps, mapDispatchToProps)(PricesGenerator);

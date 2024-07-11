@@ -1,10 +1,30 @@
-import { faEdit, faSave, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+// import { faEdit, faSave, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-const PriceRow = ({ priceEntry, product, update }) => {
+import { updateProduct } from "@/fetchers/products";
+
+import type { Product } from "../../../../../../types/types";
+
+interface PriceRowProps {
+  priceEntry: {
+    _id?: string;
+    amount: number;
+    price: number;
+  };
+  product: Product;
+  update: (value: { amount: number; price: number }) => Promise<void>;
+  filterKey: string;
+}
+
+const PriceRow = ({
+  priceEntry,
+  product,
+  update,
+  filterKey,
+}: PriceRowProps) => {
   const [editable, setEditable] = useState(false);
 
   const [value, setValue] = useState({
@@ -33,11 +53,25 @@ const PriceRow = ({ priceEntry, product, update }) => {
     update(newPrices);
   };
 
-  const deleteThis = () => {
-    const newPrices = product.prices.filter(
-      (each) => each._id != priceEntry._id,
+  const deleteThis = async () => {
+    const groupIndex = product.prices.findIndex(
+      (el) => el.configuration === filterKey,
     );
-    update(newPrices);
+
+    const itemIndex = product.prices[groupIndex].values.findIndex(
+      (el) => el._id === priceEntry._id,
+    );
+
+    const newPrices = [...product.prices];
+    newPrices[groupIndex].values.splice(itemIndex, 1);
+    // const newPrices = product.prices.filter(
+    //   (each) => each._id != priceEntry._id,
+    // );
+    // await update(newPrices);
+    await updateProduct({
+      ...product,
+      prices: [...newPrices],
+    });
   };
 
   return (
@@ -64,10 +98,10 @@ const PriceRow = ({ priceEntry, product, update }) => {
           variant={editable ? "success" : "primary"}
           size="sm"
         >
-          <FontAwesomeIcon icon={editable ? faSave : faEdit} />
+          {editable ? "Zapisz" : "Edytuj"}
         </Button>
         <Button onClick={deleteThis} variant="danger" size="sm">
-          <FontAwesomeIcon icon={faTrashAlt} />
+          Usuń
         </Button>
       </td>
     </tr>

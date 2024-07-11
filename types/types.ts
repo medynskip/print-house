@@ -1,6 +1,22 @@
+export interface ProductPriceList {
+  _id: string;
+  configuration: string;
+  values: {
+    _id?: string;
+    amount: number;
+    price: number;
+  }[];
+}
+
+export type NewProductPriceList = Omit<ProductPriceList, "_id">;
+
 export interface Parameters {
+  _id?: string;
   fieldName: string;
-  fieldValues: [];
+  fieldValues: {
+    _id?: string;
+    value: string;
+  }[];
 }
 
 export interface Product {
@@ -10,7 +26,6 @@ export interface Product {
   descriptionShort?: string;
   descriptionLong?: string;
   parameters: Parameters[];
-  prices: object[];
   icon?: string;
   duration?: number;
 }

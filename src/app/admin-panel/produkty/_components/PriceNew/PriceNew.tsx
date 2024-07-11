@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import { useHistory } from "react-router-dom";
 
-import Spinner from "react-bootstrap/Spinner";
-import Table from "react-bootstrap/Table";
+// import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import Navbar from "react-bootstrap/Navbar";
-import Alert from "react-bootstrap/Alert";
-import Tabs from "react-bootstrap/Tabs";
-import Tab from "react-bootstrap/Tab";
+// import Navbar from "react-bootstrap/Navbar";
+// import Spinner from "react-bootstrap/Spinner";
+// import Tab from "react-bootstrap/Tab";
+// import Table from "react-bootstrap/Table";
+// import Tabs from "react-bootstrap/Tabs";
 
 const PriceNew = ({ update }) => {
   const [value, setValue] = useState({
@@ -52,11 +52,11 @@ const PriceNew = ({ update }) => {
           onChange={handleChange}
           value={value.price}
         />
-        <InputGroup.Append>
+        <InputGroup>
           <Button type="submit" variant="outline-success">
             Dodaj
           </Button>
-        </InputGroup.Append>
+        </InputGroup>
       </InputGroup>
     </Form>
   );

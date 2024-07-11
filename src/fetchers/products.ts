@@ -1,4 +1,9 @@
-import type { NewProduct, Product } from "../../types/types";
+import type {
+  NewProduct,
+  NewProductPriceList,
+  Product,
+  ProductPriceList,
+} from "../../types/types";
 
 export const getProducts = async () => {
   const res = await fetch("http://localhost:5001/product/get", {
@@ -47,6 +52,44 @@ export const updateProduct = async (product: Product) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(product),
+  }).then(() => {
+    return "success";
+  });
+};
+
+// PRICE LIST
+export const addProductPriceList = async (item: NewProductPriceList) => {
+  await fetch("http://localhost:5001/product/add/pricelist", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  }).then(() => {
+    return "success";
+  });
+};
+
+export const getProductPriceList = async (key: string) => {
+  const res = await fetch(
+    `http://localhost:5001/product/get/pricelist/${key}`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  const pricelist = (await res.json()) as ProductPriceList;
+
+  return pricelist;
+};
+
+export const updateProductPriceList = async (item: ProductPriceList) => {
+  await fetch(`http://localhost:5001/product/update/pricelist/${item._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
   }).then(() => {
     return "success";
   });

@@ -1,26 +1,26 @@
+"use client";
+
 import React from "react";
-import Table from "react-bootstrap/Table";
+// import Table from "react-bootstrap/Table";
 
 // import PriceNew from "./priceNew";
 // import PricesGenerator from "./pricesGenerator";
 
 import PricesGenerator from "../PricesGenerator/PricesGenerator";
+
+import type { Product } from "../../../../../../types/types";
 // import PriceNew from "../PriceNew/PriceNew";
 
-const ProductPrices = ({ product }) => {
-  const addPrice = (newItem) => {
-    update({
-      prices: [...product.prices, newItem],
-    });
-  };
+const ProductPrices = ({ product }: { product: Product }) => {
+  // const addPrice = (newItem) => {
+  //   update({
+  //     prices: [...product.prices, newItem],
+  //   });
+  // };
 
   return (
     <>
-      <Table striped hover>
-        <tbody>
-          <PricesGenerator product={product} />
-        </tbody>
-      </Table>
+      <PricesGenerator product={product} />
       {/* <PriceNew update={addPrice} /> */}
     </>
   );
