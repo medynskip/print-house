@@ -1,6 +1,14 @@
 export interface ProductPriceList {
   _id: string;
-  configuration: string;
+  productID: string;
+  variants: {
+    configuration: string[];
+    values: {
+      _id?: string;
+      amount: number;
+      price: number;
+    }[];
+  }[];
   values: {
     _id?: string;
     amount: number;

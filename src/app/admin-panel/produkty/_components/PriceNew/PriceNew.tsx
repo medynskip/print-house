@@ -1,32 +1,30 @@
-import React, { useEffect, useState } from "react";
-// import { useHistory } from "react-router-dom";
-
-// import Alert from "react-bootstrap/Alert";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-// import Navbar from "react-bootstrap/Navbar";
-// import Spinner from "react-bootstrap/Spinner";
-// import Tab from "react-bootstrap/Tab";
-// import Table from "react-bootstrap/Table";
-// import Tabs from "react-bootstrap/Tabs";
 
-const PriceNew = ({ update }) => {
+import type { ChangeEvent, FormEvent } from "react";
+
+// import FormCont
+interface PriceNewProps {
+  update: (param: { amount: number; price: number }) => Promise<void>;
+}
+
+const PriceNew = ({ update }: PriceNewProps) => {
   const [value, setValue] = useState({
     amount: 0,
     price: 0,
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...value,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    update(value);
+  const handleSubmit = async () => {
+    await update(value);
     setValue({
       amount: 0,
       price: 0,
@@ -34,7 +32,14 @@ const PriceNew = ({ update }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        void (async () => {
+          await handleSubmit();
+        })();
+      }}
+    >
       <InputGroup className="row">
         <Form.Control
           name="amount"

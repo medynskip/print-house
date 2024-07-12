@@ -16,7 +16,7 @@ interface PriceRowProps {
   };
   product: Product;
   update: (value: { amount: number; price: number }) => Promise<void>;
-  filterKey: string;
+  filterKey: string[];
 }
 
 const PriceRow = ({

@@ -15,13 +15,15 @@ const ParameterValueNew = ({ addValue }: ParameterValueNewProps) => {
   const [value, setValue] = useState("");
 
   const handleChange = (e) => {
-    console.log(value);
+    // console.log(value);
 
     setValue(e.target.value);
   };
 
   const handleSubmit = async () => {
     await addValue(value);
+
+    setValue("");
   };
 
   return (

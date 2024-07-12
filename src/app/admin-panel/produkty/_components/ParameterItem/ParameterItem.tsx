@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Table from "react-bootstrap/Table";
 
 import ParameterItemHeader from "../ParameterItemHeader/ParameterItemHeader";
@@ -5,6 +8,10 @@ import ParameterValueNew from "../ParameterValueNew/ParameterValueNew";
 import ParameterValueRow from "../ParameterValueRow/ParameterValueRow";
 
 const ParameterItem = ({ product, parameter, update }) => {
+  // const [values, setValues] = useState([...parameter.fieldValues]);
+
+  // console.log("VALUES", values);
+
   const id = parameter._id;
 
   const addValue = async (value) => {
@@ -13,17 +20,24 @@ const ParameterItem = ({ product, parameter, update }) => {
     const updatedParameters = [...product.parameters];
     updatedParameters[i].fieldValues.push({ value: value });
 
-    await update(updatedParameters);
+    const data = await update(updatedParameters);
+
+    // console.log("RESPONSE", data);
+
+    // setValues([...updatedParameters[i].fieldValues]);
   };
 
-  const deleteValue = (idToRemove) => {
+  const deleteValue = async (idToRemove) => {
     const paramIndex = product.parameters.findIndex((x) => x._id == id);
     const updatedParameters = [...product.parameters];
     const newParams = updatedParameters[paramIndex].fieldValues.filter(
       (each) => each._id != idToRemove,
     );
     updatedParameters[paramIndex].fieldValues = [...newParams];
-    update(updatedParameters);
+
+    await update(updatedParameters);
+
+    // setValues([...updatedParameters[paramIndex].fieldValues]);
   };
 
   const updateValue = (updated, idToChange) => {
@@ -60,7 +74,7 @@ const ParameterItem = ({ product, parameter, update }) => {
                 <ParameterValueRow
                   updateValue={updateValue}
                   deleteValue={deleteValue}
-                  key={i}
+                  key={el._id}
                   el={el}
                   parentId={id}
                 />

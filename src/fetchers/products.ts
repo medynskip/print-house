@@ -46,37 +46,39 @@ export const addProduct = async (product: NewProduct) => {
 };
 
 export const updateProduct = async (product: Product) => {
-  await fetch(`http://localhost:5001/product/update/${product._id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `http://localhost:5001/product/update/${product._id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
     },
-    body: JSON.stringify(product),
-  }).then(() => {
-    return "success";
-  });
+  );
+  const response = (await res.json()) as Product;
+
+  return response;
 };
 
 // PRICE LIST
 export const addProductPriceList = async (item: NewProductPriceList) => {
-  await fetch("http://localhost:5001/product/add/pricelist", {
+  const res = await fetch("http://localhost:5001/product/add/pricelist", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(item),
-  }).then(() => {
-    return "success";
   });
+  const pricelist = (await res.json()) as ProductPriceList;
+
+  return pricelist;
 };
 
-export const getProductPriceList = async (key: string) => {
-  const res = await fetch(
-    `http://localhost:5001/product/get/pricelist/${key}`,
-    {
-      cache: "no-store",
-    },
-  );
+export const getProductPriceList = async (id: string) => {
+  const res = await fetch(`http://localhost:5001/product/get/pricelist/${id}`, {
+    cache: "no-store",
+  });
 
   const pricelist = (await res.json()) as ProductPriceList;
 
@@ -84,13 +86,19 @@ export const getProductPriceList = async (key: string) => {
 };
 
 export const updateProductPriceList = async (item: ProductPriceList) => {
-  await fetch(`http://localhost:5001/product/update/pricelist/${item._id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `http://localhost:5001/product/update/pricelist/${item._id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
     },
-    body: JSON.stringify(item),
-  }).then(() => {
-    return "success";
-  });
+  );
+  const pricelist = (await res.json()) as ProductPriceList;
+
+  console.log("CCC", pricelist);
+
+  return pricelist;
 };

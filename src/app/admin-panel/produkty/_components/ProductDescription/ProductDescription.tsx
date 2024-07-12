@@ -42,8 +42,6 @@ const ProductDescription = ({ product }: ProductDescriptionProps) => {
   };
 
   const edit = async () => {
-    setEditable((prev) => !prev);
-
     if (editable) {
       await updateProduct({
         ...product,
@@ -52,6 +50,8 @@ const ProductDescription = ({ product }: ProductDescriptionProps) => {
         descriptionLong: longDesc,
       });
     }
+
+    setEditable((prev) => !prev);
   };
 
   const activate = async () => {

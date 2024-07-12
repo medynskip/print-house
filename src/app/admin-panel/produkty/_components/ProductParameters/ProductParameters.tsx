@@ -1,14 +1,12 @@
 "use client";
-
-import React from "react";
+import React, { useState } from "react";
+import Alert from "react-bootstrap/Alert";
 import Table from "react-bootstrap/Table";
 
-// import ParameterNew from "./parameterNew";
 import { updateProduct } from "@/fetchers/products";
 
 import AddParameter from "../AddParameter/AddParameter";
-import ParametersGenerator from "../ParametersGenerator/ParametersGenerator";
-// import ParametersGenerator from "./parametersGenerator";
+import ParameterItem from "../ParameterItem/ParameterItem";
 
 import type { Parameters, Product } from "../../../../../../types/types";
 
@@ -16,31 +14,47 @@ interface ProductParametersProps {
   product: Product;
 }
 
-const ProductParameters = ({ product }: ProductParametersProps) => {
+const ProductParameters = ({
+  product: initialProduct,
+}: ProductParametersProps) => {
+  const [product, setProduct] = useState(initialProduct);
+
   const addParameter = async (newParamName: string) => {
     await updateParameters([
       ...product.parameters,
-      { fieldName: newParamName, fieldValues: [] },
+      { fieldName: newParamName, fieldValues: [{ value: "Default" }] },
     ]);
   };
 
   const updateParameters = async (params: Parameters[]) => {
-    await updateProduct({
+    const updated = await updateProduct({
       ...product,
       parameters: [...params],
     });
+
+    setProduct({ ...updated });
   };
 
   return (
     <>
-      <Table striped hover>
-        <tbody>
-          <ParametersGenerator
-            product={product}
-            updateProduct={updateParameters}
-          />
-        </tbody>
-      </Table>
+      {product.parameters.length < 1 ? (
+        <Alert variant="warning">
+          Ten produkt nie posiada żadnych parametrów!
+        </Alert>
+      ) : (
+        <Table striped hover>
+          <tbody>
+            {product.parameters.map((el, i) => (
+              <ParameterItem
+                key={i}
+                product={product}
+                parameter={el}
+                update={updateParameters}
+              />
+            ))}
+          </tbody>
+        </Table>
+      )}
       <AddParameter update={addParameter} />
     </>
   );
