@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 
 import { services } from "../../data/services";
 import { steps } from "../../data/steps";
@@ -34,19 +34,22 @@ export default function Home() {
         <div className="action-invite">
           Poznaj nasze:
           <div>
-            <LinkButton to="/uslugi/" text="usługi" varinat="primary" />
-            <LinkButton to="/produkty/" text="produkty" variant="success" />
+            <LinkButton to="/uslugi/" text="usługi" />
+            <LinkButton to="/produkty/" text="produkty" />
           </div>
         </div>
         <div className="social">
           <a href="#">
-            <Image src="/images/facebook_ico.png" alt="Facebook" />
+            Facebook
+            {/* <Image src="/images/facebook_ico.png" alt="Facebook" /> */}
           </a>
           <a href="#">
-            <Image src="/images/instagram_ico.png" alt="Instagram" />
+            Instagram
+            {/* <Image src="/images/instagram_ico.png" alt="Instagram" /> */}
           </a>
           <a href="#">
-            <Image src="/images/twitter_ico.png" alt="Twitter" />
+            Twitter
+            {/* <Image src="/images/twitter_ico.png" alt="Twitter" /> */}
           </a>
         </div>
         {/* </Container> */}
@@ -92,10 +95,10 @@ export default function Home() {
         {/* </Col> */}
 
         {/* <Col lg={8} xs={{ order: 1 }} md={{ order: 2 }}> */}
-        <Image
+        {/* <Image
           src="/images/kreatywny_zespol.jpg"
           alt="Gotowi na każde wyzwanie!"
-        />
+        /> */}
         {/* </Col>
             </Row>
           </Container> */}

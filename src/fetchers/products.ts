@@ -15,6 +15,16 @@ export const getProducts = async () => {
   return products;
 };
 
+export const getActiveProducts = async () => {
+  const res = await fetch("http://localhost:5001/product/get/active", {
+    cache: "no-store",
+  });
+
+  const products = (await res.json()) as Product[];
+
+  return products;
+};
+
 export const getProductDetails = async (productID: string) => {
   const res = await fetch(`http://localhost:5001/product/get/${productID}`, {
     cache: "no-store",
