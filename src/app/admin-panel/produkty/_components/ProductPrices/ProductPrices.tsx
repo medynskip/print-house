@@ -1,10 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+// import { useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+// import Button from "react-bootstrap/Button";
+// import Form from "react-bootstrap/Form";
 import Table from "react-bootstrap/Table";
 
 import {
@@ -16,78 +16,115 @@ import {
 import PriceNew from "../PriceNew/PriceNew";
 import PriceRow from "../PriceRow/PriceRow";
 
-import type { Product } from "../../../../../../types/types";
-import type { ChangeEvent } from "react";
+import type { PriceListValue, Product } from "../../../../../../types/types";
+// import type { ChangeEvent } from "react";
 
 interface ProductPricesProps {
   product: Product;
 }
 
 const ProductPrices = ({ product }: ProductPricesProps) => {
-  const [filter, setFilter] = useState<object>(() =>
-    product.parameters.reduce(
-      (prev, curr) => ({
-        ...prev,
-        [curr.fieldName]: curr.fieldValues[0]._id,
-      }),
-      {},
-    ),
-  );
+  // const [filter, setFilter] = useState<object>(() =>
+  //   product.parameters.reduce(
+  //     (prev, curr) => ({
+  //       ...prev,
+  //       [curr.fieldName]: curr.fieldValues[0]._id,
+  //     }),
+  //     {},
+  //   ),
+  // );
 
-  const filterKey = Object.values(filter) as string[];
+  // const filterKey = Object.values(filter) as string[];
 
   const { isPending, data, refetch } = useQuery({
-    queryKey: [filterKey],
+    queryKey: [product._id],
     queryFn: () => getProductPriceList(product._id),
   });
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  // const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   setFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  // };
 
   const createPriceList = async (value: { amount: number; price: number }) => {
     await addProductPriceList({
       productID: product._id,
-      values: [value],
+      values: [value as PriceListValue],
       variants: [],
     });
 
     await refetch();
   };
 
-  const updatePriceList = async (value: { amount: number; price: number }) => {
+  const addSinglePriceEntry = async (value: {
+    amount: number;
+    price: number;
+  }) => {
     if (!data) return;
 
     await updateProductPriceList({
       ...data,
-      values: [...data.values, value],
+      values: [...data.values, value as PriceListValue],
     });
 
     await refetch();
   };
 
-  const createVariant = async () => {
+  const updateSinglePriceEntry = async (value: {
+    _id: string;
+    amount: number;
+    price: number;
+  }) => {
     if (!data) return;
+
+    const i = data.values.findIndex((x) => x._id === value._id);
+    const newPrices = [...data.values];
+    newPrices[i] = { ...value };
 
     await updateProductPriceList({
       ...data,
-      variants: [
-        ...data.variants,
-        { configuration: filterKey, values: data.values },
-      ],
+      values: [...newPrices],
     });
 
     await refetch();
   };
 
-  const variant = data?.variants.find(
-    (el) => el.configuration.join("-") === filterKey.join("-"),
-  );
-  const priceListToDisplay = variant?.values || data?.values;
+  const deleteSinglePriceEntry = async (id: string) => {
+    if (!data) return;
+
+    const i = data.values.findIndex((x) => x._id === id);
+    const newValues = [...data.values];
+    newValues.splice(i, 1);
+
+    await updateProductPriceList({
+      ...data,
+      values: newValues,
+    });
+
+    await refetch();
+  };
+
+  // const createVariant = async () => {
+  //   if (!data) return;
+
+  //   await updateProductPriceList({
+  //     ...data,
+  //     variants: [
+  //       ...data.variants,
+  //       { configuration: filterKey, values: data.values },
+  //     ],
+  //   });
+
+  //   await refetch();
+  // // };
+
+  // const variant = data?.variants.find(
+  //   (el) => el.configuration.join("-") === filterKey.join("-"),
+  // );
+  // const priceListToDisplay = variant?.values || data?.values;
 
   return (
     <div>
-      <h2>POLA</h2>
+      {/* <h2>POLA</h2>
       <div>
         {product.parameters.map((param) => (
           <div key={param.fieldName}>
@@ -106,10 +143,10 @@ const ProductPrices = ({ product }: ProductPricesProps) => {
             </Form.Select>
           </div>
         ))}
-      </div>
+      </div> */}
       <h2>
         WARTOŚCI
-        <Button
+        {/* <Button
           onClick={() => {
             void (async () => {
               await createVariant();
@@ -118,32 +155,33 @@ const ProductPrices = ({ product }: ProductPricesProps) => {
           disabled={Boolean(variant)}
         >
           Utwórz wariant
-        </Button>
+        </Button> */}
       </h2>
       {isPending ? (
         <Spinner />
       ) : (
         <>
-          {priceListToDisplay ? (
+          {data ? (
             <>
               <Table striped hover>
                 <tbody>
-                  {priceListToDisplay.map((el) => (
+                  {data.values.map((el) => (
                     <PriceRow
                       key={el.amount}
                       priceEntry={el}
-                      update={updatePriceList}
-                      product={product}
-                      filterKey={filterKey}
+                      update={updateSinglePriceEntry}
+                      remove={deleteSinglePriceEntry}
+                      // product={product}
+                      // filterKey={filterKey}
                     />
                   ))}
                 </tbody>
               </Table>
-              <PriceNew update={updatePriceList} />
+              <PriceNew update={addSinglePriceEntry} />
             </>
           ) : (
             <div>
-              <div>BRAK ZDEFINIOWANYCH CEN DLA FILTRU</div>
+              <div>BRAK ZDEFINIOWANYCH CENNIKA</div>
               <PriceNew update={createPriceList} />
             </div>
           )}

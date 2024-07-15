@@ -8,6 +8,7 @@ import Tabs from "react-bootstrap/Tabs";
 import ProductDescription from "../ProductDescription/ProductDescription";
 import ProductParameters from "../ProductParameters/ProductParameters";
 import ProductPrices from "../ProductPrices/ProductPrices";
+import ProductVariants from "../ProductVariants/ProductVariants";
 
 import type { Product } from "../../../../../../types/types";
 
@@ -15,13 +16,6 @@ interface ProductWrapperProps {
   product: Product;
 }
 const ProductWrapper = ({ product }: ProductWrapperProps) => {
-  // const update = async (params: object) => {
-  //   await updateProduct({
-  //     ...product,
-  //     ...params,
-  //   });
-  // };
-
   return (
     <Tabs>
       <Tab eventKey="opis" title="Opis">
@@ -32,6 +26,9 @@ const ProductWrapper = ({ product }: ProductWrapperProps) => {
       </Tab>
       <Tab eventKey="ceny" title="Ceny">
         <ProductPrices product={product} />
+      </Tab>
+      <Tab eventKey="warianty" title="Warianty">
+        <ProductVariants product={product} />
       </Tab>
     </Tabs>
   );
