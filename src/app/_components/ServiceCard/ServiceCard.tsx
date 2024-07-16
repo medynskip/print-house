@@ -1,7 +1,14 @@
-import Image from "next/image";
+// import Image from "next/image";
 // import Col from "react-bootstrap/Col";
 
-const ServiceCard = ({ service }) => {
+interface ServiceCardProps {
+  service: {
+    title: string;
+    text: string;
+  };
+}
+
+const ServiceCard = ({ service }: ServiceCardProps) => {
   return (
     // <Col>
     <div className="service-card">
