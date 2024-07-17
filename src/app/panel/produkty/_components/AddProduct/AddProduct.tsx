@@ -6,15 +6,10 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 import { addProduct } from "@/fetchers/products";
-
-// import { ChangeEvent } from "react";
+import { slugify } from "@/utils/slugify";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
-
-  // const handleChange = (e) => {
-  //   setName(e.target.value);
-  // };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);
@@ -28,8 +23,8 @@ const AddProduct = () => {
     } else {
       const newProduct = {
         name: name,
+        slug: slugify(name),
         parameters: [],
-        prices: [],
         active: false,
         icon: "",
         duration: "1",

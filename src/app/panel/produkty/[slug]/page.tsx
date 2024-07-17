@@ -6,8 +6,8 @@ import { getProductDetails } from "@/fetchers/products";
 
 import ProductWrapper from "../_components/ProductWrapper/ProductWrapper";
 
-const ProductCard = async ({ params }: { params: { id: string } }) => {
-  const product = await getProductDetails(params.id);
+const ProductCard = async ({ params }: { params: { slug: string } }) => {
+  const product = await getProductDetails(params.slug);
 
   return (
     <Container className="product-card">

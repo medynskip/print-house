@@ -6,15 +6,12 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import { deleteProduct } from "@/fetchers/products";
+import { slugify } from "@/utils/slugify";
+
+import type { Product } from "../../../../../../types/types";
 
 interface ProductCardProps {
-  product: {
-    _id: string;
-    name: string;
-    active: boolean;
-    parameters: object[];
-    prices: object[];
-  };
+  product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
@@ -36,16 +33,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Badge bg={product.parameters.length > 0 ? "success" : "secondary"}>
         Parametry: {product.parameters.length}
       </Badge>
-      <Badge bg={product.prices.length > 0 ? "success" : "secondary"}>
-        Ceny: {product.prices.length}
-      </Badge>
-
-      <Link href={`/admin-panel/produkty/${product._id}`}>
+      <Link href={`/panel/produkty/${slugify(product.name)}`}>
         <Button variant="primary" size="sm">
           edit
         </Button>
       </Link>
-      <Button variant="danger" size="sm" onClick={handleDelete}>
+      <Button
+        variant="danger"
+        size="sm"
+        onClick={() => {
+          void (async () => {
+            await handleDelete();
+          })();
+        }}
+      >
         Delete
       </Button>
     </ListGroup.Item>

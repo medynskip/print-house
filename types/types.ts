@@ -29,12 +29,13 @@ export interface Parameters {
 export interface Product {
   _id: string;
   name: string;
+  slug: string;
   active: boolean;
   descriptionShort?: string;
   descriptionLong?: string;
   parameters: Parameters[];
   icon?: string;
-  duration?: number;
+  duration?: string;
 }
 
 export type NewProduct = Omit<Product, "_id">;

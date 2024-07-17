@@ -1,4 +1,4 @@
-import Link from "next/link";
+// import Link from "next/link";
 
 // import React, { useEffect } from "react";
 
@@ -7,6 +7,8 @@ import Link from "next/link";
 // import Row from "react-bootstrap/Row";
 
 // import utils from "../utils/utils";
+
+import style from "./Footer.module.scss";
 
 const CompanyDetails = () => {
   return (
@@ -61,10 +63,10 @@ const CompanyDetails = () => {
 // };
 
 const Footer = () => {
-// const Footer = ({ pages, products }) => {
+  // const Footer = ({ pages, products }) => {
   return (
-    <footer>
-        <CompanyDetails />
+    <footer className={style.footer}>
+      <CompanyDetails />
       {/* <Container>
         <h2>
           <img src="/images/logo_white.png" />

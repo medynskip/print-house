@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Col from "react-bootstrap/Col";
 
+import { slugify } from "@/utils/slugify";
+
+import style from "./ProductCard.module.scss";
 // import utils from "../utils/utils";
 
 interface ProductCardProps {
@@ -12,26 +15,18 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  // const nameSlug = utils.slugify(props.product.name);
-  const nameSlug = "text";
+  const nameSlug = slugify(product.name);
+  // const nameSlug = "text";
   // const url = `/produkty/${nameSlug}`;
   return (
-    <Col>
-      <div className="product-card">
+    <Col className={style.card}>
+      <Link href={`/produkty/${nameSlug}`} className={style.link}>
         {product.icon ? (
           <Image src={product.icon} alt="" width="100" height="100" />
         ) : null}
         {product.name.toUpperCase()}
-
-        <div className="reveal">
-          <Link href={`/produkty/${nameSlug}`} className="product-card">
-            Szczegóły
-          </Link>
-          <Link href={`/zamowienie/${nameSlug}`} className="product-card">
-            Zamów
-          </Link>
-        </div>
-      </div>
+        {/* <Link href={`/produkty/${nameSlug}`}>Szczegóły</Link> */}
+      </Link>
     </Col>
   );
 };

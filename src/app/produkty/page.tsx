@@ -26,7 +26,7 @@ const Products = async () => {
             elementum.
           </p>
         </div>
-        <Row noGutters xs={2} md={4} lg={4}>
+        <Row noGutters xs={2} md={4} lg={6}>
           {products.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}

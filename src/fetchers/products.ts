@@ -25,12 +25,14 @@ export const getActiveProducts = async () => {
   return products;
 };
 
-export const getProductDetails = async (productID: string) => {
-  const res = await fetch(`http://localhost:5001/product/get/${productID}`, {
+export const getProductDetails = async (slug: string) => {
+  const res = await fetch(`http://localhost:5001/product/get/${slug}`, {
     cache: "no-store",
   });
 
   const product = (await res.json()) as Product;
+
+  console.log("RESPONSE", product);
 
   return product;
 };
