@@ -6,7 +6,11 @@ import type { ChangeEvent } from "react";
 
 interface ProductParametersProps {
   parameters: Parameters[];
-  updateFilter: React.Dispatch<React.SetStateAction<object>>;
+  updateFilter: React.Dispatch<
+    React.SetStateAction<{
+      [n: string]: { _id: string; value: string };
+    }>
+  >;
 }
 
 const ProductParameters = ({
@@ -14,7 +18,17 @@ const ProductParameters = ({
   updateFilter,
 }: ProductParametersProps) => {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    updateFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    // const index = e.target.selectedIndex;
+    // const el = e.target.childNodes[index];
+    const option = JSON.parse(e.target.value) as { _id: string; value: string };
+
+    // console.log(option);
+
+    updateFilter((prev) => ({
+      ...prev,
+      [e.target.name]: { ...option },
+    }));
+    // updateFilter((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
@@ -29,7 +43,7 @@ const ProductParameters = ({
               <Form.Select onChange={handleChange} name={parameter.fieldName}>
                 {parameter.fieldValues.map((option) => {
                   return (
-                    <option key={option._id} value={option._id}>
+                    <option key={option._id} value={JSON.stringify(option)}>
                       {option.value}
                     </option>
                   );

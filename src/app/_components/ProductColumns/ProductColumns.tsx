@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 
 import ProductParameters from "../ProductParameters/ProductParameters";
 import ProductPrices from "../ProductPrices/ProductPrices";
+import ProductSummary from "../ProductSummary/ProductSummary";
 
 import type { Product, ProductPriceList } from "../../../../types/types";
 
@@ -15,25 +16,38 @@ interface ProductColumnsProps {
 }
 
 const ProductColumns = ({ product, priceList }: ProductColumnsProps) => {
-  const [filter, setFilter] = useState<object>(() =>
+  const [filter, setFilter] = useState<{
+    [n: string]: { _id: string; value: string };
+  }>(() =>
     product.parameters.reduce(
       (prev, curr) => ({
         ...prev,
-        [curr.fieldName]: curr.fieldValues[0]._id,
+        [curr.fieldName]: curr.fieldValues[0],
       }),
       {},
     ),
   );
 
-  const filterKey = Object.values(filter) as string[];
+  console.log("PROD", product);
+
+  const filterKey = Object.values(filter).map(
+    (el: { _id: string; value: string }) => el._id,
+  );
+
   const activePriceList =
     priceList.variants.find(
       (el) => el.configuration.join("-") === filterKey.join("-"),
     )?.values || priceList.values;
 
-  console.log("PRICE LIST", activePriceList);
+  const [selectedVolume, setSelectedVolume] = useState(activePriceList[0]);
 
-  if (product.parameters.length < 1) return <div>Produkt niedostępny</div>;
+  const order = {
+    product: product.name,
+    parameters: filter,
+    duration: product.duration,
+    price: selectedVolume.price,
+    volume: selectedVolume.amount,
+  };
 
   return (
     <Row noGutters xs={1} md={1} lg={3}>
@@ -44,12 +58,14 @@ const ProductColumns = ({ product, priceList }: ProductColumnsProps) => {
         />
       </Col>
       <Col>
-        Ceny
-        <ProductPrices prices={activePriceList} />
+        <ProductPrices
+          prices={activePriceList}
+          setSelected={setSelectedVolume}
+        />
       </Col>
       <Col>
-        Podsumowanie
-        {/* <Summary order={order} sendToStore={sendToStore} /> */}
+        {/* Podsumowanie */}
+        <ProductSummary order={order} />
       </Col>
     </Row>
   );

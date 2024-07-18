@@ -11,15 +11,17 @@ import type { PriceListValue } from "../../../../types/types";
 
 interface ProductPricesProps {
   prices: PriceListValue[];
+  setSelected: React.Dispatch<React.SetStateAction<PriceListValue>>;
 }
 
-const ProductPrices = ({ prices }: ProductPricesProps) => {
+const ProductPrices = ({ prices, setSelected }: ProductPricesProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleClick = (index: number, id: string) => {
     // const index = parseInt(e.currentTarget.getAttribute("data-key"));
 
     setActiveIndex(index);
+    setSelected(prices[index]);
     console.log("ID", id);
   };
 
