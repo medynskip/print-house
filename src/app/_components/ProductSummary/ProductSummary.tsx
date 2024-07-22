@@ -1,8 +1,11 @@
 // import { useRouter } from "next/router";
 // import React, { useEffect, useState } from "react";
+// import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import Button from "react-bootstrap/Button";
 
 import { calculateWorkDays } from "@/utils/calculateWorkingDays";
+import { prepareQueryParams } from "@/utils/prepareQueryParams";
 // import utils from "../utils/utils";
 
 interface ProductSummaryProps {
@@ -16,15 +19,19 @@ interface ProductSummaryProps {
 }
 
 const ProductSummary = ({ order }: ProductSummaryProps) => {
+  const router = useRouter();
   const selectedFilter = Object.keys(order.parameters).map((key) => ({
     field: key,
     value: order.parameters[key].value,
   }));
 
-  console.log("order.parameters", order.parameters);
-  console.log("selectedFilter", selectedFilter);
+  // console.log("order.parameters", order.parameters);
+  // console.log("selectedFilter", selectedFilter);
 
   const handleClick = () => {
+    const params = prepareQueryParams(order);
+
+    router.push(`/zamowienie${params ? params : ""}`);
     console.log("CLICK");
   };
 
