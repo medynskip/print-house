@@ -5,6 +5,7 @@ export interface PriceListValue {
 }
 
 export type NewPriceListValue = Omit<PriceListValue, "_id">;
+
 export interface ProductPriceList {
   _id: string;
   productID: string;
@@ -39,3 +40,14 @@ export interface Product {
 }
 
 export type NewProduct = Omit<Product, "_id">;
+
+export interface Order {
+  product: string;
+  parameters: {
+    name: string;
+    value: string;
+  }[];
+  duration: number;
+  value: number;
+  volume: number;
+}

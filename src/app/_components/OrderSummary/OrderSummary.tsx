@@ -1,17 +1,13 @@
-// import { useRouter } from "next/router";
-// import React, { useState } from "react";
-
-// import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-// import Alert from "react-bootstrap/Alert";
-// import Button from "react-bootstrap/Button";
-// import Form from "react-bootstrap/Form";
-// import InputGroup from "react-bootstrap/InputGroup";
-// import FormControl from "react-bootstrap/FormControl";
-// import Spinner from "react-bootstrap/Spinner";
 
-const OrderSummary = ({ order }) => {
+import type { Order } from "../../../../types/types";
+
+interface OrderSummaryProps {
+  order: Order;
+}
+
+const OrderSummary = ({ order }: OrderSummaryProps) => {
   return (
     <div className="parameters content-box">
       <h4>Wybrane parametry zamówienia</h4>

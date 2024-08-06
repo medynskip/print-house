@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
@@ -28,8 +28,6 @@ const ProductColumns = ({ product, priceList }: ProductColumnsProps) => {
     ),
   );
 
-  console.log("PROD", product);
-
   const filterKey = Object.values(filter).map(
     (el: { _id: string; value: string }) => el._id,
   );
@@ -40,6 +38,10 @@ const ProductColumns = ({ product, priceList }: ProductColumnsProps) => {
     )?.values || priceList.values;
 
   const [selectedVolume, setSelectedVolume] = useState(activePriceList[0]);
+
+  useEffect(() => {
+    setSelectedVolume(activePriceList[0]);
+  }, [filter, activePriceList]);
 
   const order = {
     product: product.name,
@@ -64,7 +66,6 @@ const ProductColumns = ({ product, priceList }: ProductColumnsProps) => {
         />
       </Col>
       <Col>
-        {/* Podsumowanie */}
         <ProductSummary order={order} />
       </Col>
     </Row>

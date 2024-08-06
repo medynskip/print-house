@@ -1,13 +1,10 @@
-//React
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 
 import style from "./ProductPrices.module.scss";
-// import { ProductPriceList } from "../../../../types/types";
 
 import type { PriceListValue } from "../../../../types/types";
-// import type { MouseEvent } from "react";
 
 interface ProductPricesProps {
   prices: PriceListValue[];
@@ -17,13 +14,17 @@ interface ProductPricesProps {
 const ProductPrices = ({ prices, setSelected }: ProductPricesProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleClick = (index: number, id: string) => {
-    // const index = parseInt(e.currentTarget.getAttribute("data-key"));
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [prices]);
 
-    setActiveIndex(index);
-    setSelected(prices[index]);
-    console.log("ID", id);
-  };
+  const handleClick = useCallback(
+    (index: number) => {
+      setActiveIndex(index);
+      setSelected(prices[index]);
+    },
+    [prices, setSelected],
+  );
 
   return (
     <div className="shop-module">
@@ -43,11 +44,8 @@ const ProductPrices = ({ prices, setSelected }: ProductPricesProps) => {
                   activeIndex === i && style.priceRowActive,
                 )}
                 key={item._id}
-                // data-key={i}
-                // data-amount={price.amount}
-                // data-price={price.price}
                 onClick={() => {
-                  handleClick(i, item._id);
+                  handleClick(i);
                 }}
               >
                 <td>{item.amount}</td>
